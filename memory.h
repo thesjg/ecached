@@ -47,7 +47,7 @@ typedef struct memory_zone {
     uint32_t			quantum;
     size_t			allocated;
     uint32_t			bucket_count;
-    struct memory_bucket	*buckets;
+    struct memory_bucket	**buckets;
 } *memory_zone_t;
 
 typedef struct memory_bucket {

@@ -40,6 +40,10 @@ typedef struct hash_entry {
 } *hash_entry_t;
 
 
+extern hash_table_t table[HASH_TABLES];
+extern int active_tables;
+
+
 void hash_init(ecached_settings_t);
 hash_entry_t hash_search(const hash_t, const char *, const hash_keylen_t);
 bool hash_insert(const hash_t, const char *, const hash_keylen_t, void *);

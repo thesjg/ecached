@@ -1,8 +1,8 @@
 #include "hash.h"
 
+hash_table_t table[HASH_TABLES];
+int active_tables = 1;
 
-static hash_table_t table[HASH_TABLES];
-static int active_tables = 1;
 
 static hash_table_t hash_create(uint32_t);
 static void hash_relocate_bucket(void);
@@ -29,6 +29,7 @@ hash_search(const hash_t hash, const char *key, const hash_keylen_t len)
         const uint32_t offset = hash & ((1 << ht->shift)-1);
         hash_entry_t he = (hash_entry_t)(*((uintptr_t *)&ht->table[offset]));
 
+        /* convert to while (he != NULL) ? */
         if (he != NULL) {
             while (1) {
                 if (memcmp(key, he->key, MIN(he->len, len)) != 0)
@@ -59,7 +60,7 @@ hash_insert(const hash_t hash, const char *key, const hash_keylen_t len, void *d
     const uint32_t offset = hash & ((1 << ht->shift)-1);
     hash_entry_t she = (hash_entry_t)(*((uintptr_t *)&ht->table[offset]));
     hash_entry_t he;
-    uint32_t hesize = sizeof(hash_entry_t);
+    uint32_t hesize = sizeof(struct hash_entry);
 
     if (she != NULL) {
         uint32_t asize = 0;
@@ -122,7 +123,7 @@ hash_create(const uint32_t shiftsize)
     if ((ht = (hash_table_t)malloc(sizeof(*ht))) == NULL)
         return (NULL);
 
-    if ((ht->table = (hash_entry_t)malloc(sizeof(hash_entry_t) * size)) == NULL)
+    if ((ht->table = (hash_entry_t)malloc(sizeof(struct hash_entry) * size)) == NULL)
         return (NULL);
 
     memset(ht->table, 0, size);

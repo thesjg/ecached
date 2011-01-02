@@ -25,8 +25,6 @@ memory_get_zone(size_t size)
 {
     size_t zsize = pow8_ceil(size);
 
-printf("memory_get_zone: returning zone for size: %d\n", zsize);
-
     if (zsize <= MEMORY_ZONE_MIN)
         return (zones[0]);
 
@@ -84,7 +82,8 @@ memory_zone_create(size_t quantum)
 static bool
 memory_bucket_allocate(memory_zone_t zone)
 {
-    memory_bucket_t bucket, buckets;
+    memory_bucket_t bucket;
+    memory_bucket_t *buckets;
     size_t size = zone->allocated + (zone->quantum * MEMORY_BUCKET_SIZE);
 
     if ((bucket = (memory_bucket_t)malloc(sizeof(*bucket))) == NULL)
@@ -107,7 +106,7 @@ memory_bucket_allocate(memory_zone_t zone)
     bucket->parent_zone = zone;
     bucket->bucket      = ((int8_t *)zone->zone) + zone->allocated;
     bucket->offset      = zone->allocated;
-    bucket->mask        = 0xffffffff;
+    bucket->mask        = 0xffffffffU;
 
     zone->bucket_count++;
     zone->allocated = size;
@@ -116,12 +115,12 @@ memory_bucket_allocate(memory_zone_t zone)
                            sizeof(bucket)*zone->bucket_count)) != NULL)
     {
         zone->buckets = buckets;
-        zone->buckets[zone->bucket_count] = *bucket;
+        zone->buckets[zone->bucket_count-1] = bucket;
     } else {
-        return false;
+        return (false);
     }
 
-    return true;
+    return (true);
 }
 
 static inline size_t
