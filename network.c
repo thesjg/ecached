@@ -150,7 +150,8 @@ printf("DOING CACHE_STORE()\n");
                                 case COMMAND_TYPE_RETRIEVE:
 printf("DOING CACHE_RETRIEVE()\n");
                                     if ((co = cache_retrieve(&conn->action)) != NULL) {
-
+                                        printf("Retrieved item from cache!\n");
+                                        printf("LEN IS: %d\n", co->size);
                                     }
                                     break;
                                 case COMMAND_TYPE_EXPIRE:
