@@ -8,6 +8,7 @@
 #include "hash.h"
 #include "network.h"
 #include "settings.h"
+#include "debug.h"
 
 
 static void
@@ -101,6 +102,8 @@ main(int argc, char *argv[])
 
     cache_init(&settings);
     network_main(&settings);
+
+//    test();
 
     return (EX_OK);
 }
