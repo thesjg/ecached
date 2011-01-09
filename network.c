@@ -65,6 +65,10 @@ network_main(ecached_settings_t settings)
         if ((kq = kqueue()) == -1)
             ecached_err(EX_OSERR, "kqueue(2) failure");
 
+        memset(&changes, 0, sizeof(changes));
+        memset(&events, 0, sizeof(events));
+        memset(&connections, 0, sizeof(connections));
+
         EV_SET(&changes[0], fd_listen, EVFILT_READ, EV_ADD, 0, 0, 0);
         nchanges = 1;
 

@@ -49,7 +49,8 @@ cache_store(command_action_t command, network_buffer_t buffer)
     memory_zone_t zone;
     memory_bucket_t bucket;
     cache_object_t co;
-    int offset, i;
+    int offset;
+    uint32_t i;
 
     he = hash_search(command->action.store.hash,
                      command->action.store.key,

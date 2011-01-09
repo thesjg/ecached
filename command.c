@@ -11,7 +11,7 @@ static struct commands_parse commands_parse[] = {
     { "cas",		3,	COMMAND_CAS,	COMMAND_TYPE_STORE },
     { "get",		3,	COMMAND_GET,	COMMAND_TYPE_RETRIEVE },
     { "gets",		4,	COMMAND_GETS,	COMMAND_TYPE_RETRIEVE },
-    { NULL }
+    { NULL,		0,	0,		0 }
 };
 
 static inline char *parse_create_token(network_buffer_t);
@@ -106,7 +106,7 @@ store:
 
     case COMMAND_PARSE_SIZE:
         if ((token = parse_create_token(buffer)) == NULL) {
-            if ((token = parse_find_terminator(buffer)) == NULL)
+            if (parse_find_terminator(buffer) == NULL)
                 goto fail;
 
             *token = '\0';
@@ -179,7 +179,7 @@ success:
     if (action->command < COMMAND_MODIFY_MAX) {
         printf("K: %s\n", action->action.store.key);
         printf("F: %d\n", action->action.store.flags);
-        printf("E: %d\n", action->action.store.exptime);
+        printf("E: %ld\n", action->action.store.exptime);
         printf("S: %u\n", action->action.store.size);
         printf("N: %s\n", (action->action.store.noreply == true) ? "true" : "false");
     } else {

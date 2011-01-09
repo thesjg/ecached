@@ -12,7 +12,7 @@ print_storage()
             hash_entry_t he = (hash_entry_t)(*((uintptr_t *)&ht->table[j]));
             if (he != NULL) {
                 printf("Bucket: %d Keys: ", j);
-                for (int k = 0; k < he->len; ++k) {
+                for (hash_keylen_t k = 0; k < he->len; ++k) {
                     printf("%c", he->key[k]);
                     if (k == he->len - 1) printf(" ");
                 }

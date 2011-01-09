@@ -46,7 +46,6 @@ set_sockbuf_sendsize(int fd, size_t size)
         optval = size;
 
         while (1) {
-
             setsockopt(fd, SOL_SOCKET, SO_SNDBUF, (void *)&optval, optlen);
             getsockopt(fd, SOL_SOCKET, SO_SNDBUF, (void *)&optval, &optlen);
 
@@ -66,14 +65,14 @@ set_sockbuf_sendsize(int fd, size_t size)
  * Attempt to set incoming sockbuf to the specified size.
  */
 socklen_t
-set_sockbuf_recvsize(int fd, size_t size)
+set_sockbuf_recvsize(int fd, socklen_t size)
 {
-    socklen_t optval, optlen = sizeof(socklen_t);
+    socklen_t optlen = sizeof(size);
 
-    setsockopt(fd, SOL_SOCKET, SO_RCVBUF, (void *)&optval, optlen);
-    getsockopt(fd, SOL_SOCKET, SO_RCVBUF, (void *)&optval, &optlen);
+    setsockopt(fd, SOL_SOCKET, SO_RCVBUF, (void *)&size, optlen);
+    getsockopt(fd, SOL_SOCKET, SO_RCVBUF, (void *)&size, &optlen);
 
-    return (optval);
+    return (size);
 }
 
 void
