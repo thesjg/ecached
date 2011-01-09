@@ -138,21 +138,6 @@ hash_create(const uint32_t shiftsize)
 void
 hash_relocate_bucket(void)
 {
-    static uint32_t bucket = 0;
-    hash_table_t ht = table[0] + bucket;
-
-    while (ht == NULL) {
-        if (bucket >= ht->buckets) {
-            free(table[1]);
-            --active_tables;
-            bucket = 0;
-        }
-
-        ++ht;
-        ++bucket;
-    }
-
-    // walk buckets and move
 }
 
 
